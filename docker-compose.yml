@@ -1,0 +1,12 @@
+services:
+  batch-report-app:
+    build: .
+    container_name: batch-report-app
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    volumes:
+      # Même convention que loadtest-app : un dossier hôte sous /home/debian/logs,
+      # que sentrix-agent monte de son côté via le volume "parapluie"
+      # /home/debian/logs:/var/log/apps:ro (voir README de loadtest-app).
+      - /home/debian/logs/batch-report-app:/var/log/batch-report-app

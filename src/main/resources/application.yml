@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: batch-report-app
+  main:
+    banner-mode: off
+
+server:
+  port: 8082
+
+# ──────────────────────────────────────────────────────────────────────────
+# Paramètres du job de reporting simulé.
+# ──────────────────────────────────────────────────────────────────────────
+batch:
+  reports-dir: /app/reports              # I/O disque interne au conteneur (éphémère)
+  records-per-batch: 2000                # lignes générées par rapport
+  retention-count: 5                     # rapports conservés avant purge
+  corrupt-every-cycles: 10               # 1 rapport sur 10 est corrompu (test ERROR)
+  low-space-warn-threshold-percent: 20.0 # WARN réel si l'espace libre passe sous ce seuil
+  json-log-file: /var/log/batch-report-app/app.json  # lu par Sentrix Agent (format: json)
+
+# ──────────────────────────────────────────────────────────────────────────
+# Logs console (texte, pour le confort local) — les logs JSON destinés à
+# l'agent sont écrits séparément par JsonLogWriter.
+# ──────────────────────────────────────────────────────────────────────────
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5level --- [%15.15t] %-40.40logger{39} : %msg%n"
+  level:
+    root: INFO
+    com.example.batchapp: INFO
